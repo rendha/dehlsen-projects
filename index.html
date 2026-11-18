@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dehlsen Projects</title>
+<style>
+  :root{--ink:#16202b;--muted:#5b6774;--line:#d5dbe1;--accent:#1f5f9e}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f7f9fb,#e8edf2);min-height:100vh}
+  header{max-width:980px;margin:0 auto;padding:36px 20px 10px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  header img{height:46px}
+  header h1{font-size:24px;margin:0}
+  header p{margin:2px 0 0;color:var(--muted);font-size:14px}
+  main{max-width:980px;margin:0 auto;padding:16px 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  a.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;box-shadow:0 2px 10px rgba(20,30,40,.05);transition:transform .15s,box-shadow .15s}
+  a.card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(20,30,40,.1)}
+  .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--accent);background:#eaf2fb;border-radius:5px;padding:3px 7px;margin-bottom:10px}
+  a.card h2{font-size:16.5px;margin:0 0 6px}
+  a.card p{font-size:13px;color:var(--muted);margin:0;line-height:1.5}
+  .go{margin-top:12px;font-size:13px;font-weight:600;color:var(--accent)}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:0 0 30px}
+</style>
+</head>
+<body>
+<header>
+  <img src="logo.png" alt="Dehlsen Energy">
+  <div><h1>Dehlsen Projects</h1><p>Interactive 3D models and solar layouts</p></div>
+</header>
+<main>
+  <a class="card" href="sujith-residence/"><span class="tag">3D model · Solar</span><h2>Dr Sujith Residence</h2><p>Full two-storey house from the final plan, with 17 solar modules on the terrace and tiled roof.</p><div class="go">Open model →</div></a>
+  <a class="card" href="asset-bellevue/"><span class="tag">3D outline · Solar</span><h2>Asset Bellevue, Kochi</h2><p>Terrace outline with the 20 kW layout and IS 875 wind check.</p><div class="go">Open model →</div></a>
+  <a class="card" href="casa-belleza-solar/"><span class="tag">3D roof · Solar</span><h2>Casa Belleza – Plot 14</h2><p>Hipped roof with the 10-module layout from the Villa No 14 sheet.</p><div class="go">Open model →</div></a>
+  <a class="card" href="villa-no-14/"><span class="tag">3D roof · Solar</span><h2>Villa No 14</h2><p>3D model of the Dehlsen solar sheet for Villa No 14.</p><div class="go">Open model →</div></a>
+  <a class="card" href="casa-belleza-roof/"><span class="tag">3D roof</span><h2>Casa Belleza – Roof plan</h2><p>3D model of the architect's roof plan (DWG).</p><div class="go">Open model →</div></a>
+</main>
+<footer>Dehlsen Energy · Calicut</footer>
+</body>
+</html>
