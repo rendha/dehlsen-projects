@@ -51,7 +51,7 @@
     #info h1{font-size:14px}
   }
 </style>
-<style>.lbl.sol{background:#1f5f9e;color:#fff;border:none} .lbl.rm{font-size:11px;font-weight:600;color:#1f3550;background:rgba(255,255,255,.92)}</style>
+<style>.lbl.sol{background:#16202b;color:#fff;border:none} .lbl.rm{font-size:11px;font-weight:600;color:#1f3550;background:rgba(255,255,255,.92)}</style>
 </head>
 <body>
 <canvas id="c"></canvas>
@@ -68,11 +68,11 @@
   <div class="opt"><div class="pill" style="background:#dd8a3c">⌂</div><div><b>Hipped truss roof · 25°</b><span>8.10 × 12.70 m to the eaves, eaves +6.50, ridge ≈ +8.39</span></div></div>
   <div class="opt"><div class="pill" style="background:#8f8a80">▤</div><div><b>Flat terrace +6.20</b><span>Left wing, 4.75 × 9.70 m slab, open edge (no parapet, as in the photo); balcony 5.20 × 2.10 m with pergola below it</span></div></div>
   <div class="opt"><div class="pill" style="background:#3a3f45">▲</div><div><b>Water tank and tower</b><span>Tank 2.00 × 1.95 m, slab +8.20; tower 1.50 × 1.50 m, slab +9.60, small tiled roof</span></div></div>
-  <h2>Solar layout · 17 modules</h2>
-  <div class="opt"><div class="pill" style="background:#1d3a63">6</div><div><b>Terrace · 6 modules</b><span>2 rows × 3 landscape, on a 10° frame facing north (low edge on the north side, 40 cm above the slab)</span></div></div>
-  <div class="opt"><div class="pill" style="background:#1d3a63">4</div><div><b>Rear hip · 4 modules</b><span>2 × 2 landscape on the back slope (opposite the sit-out), centred on the hip</span></div></div>
-  <div class="opt"><div class="pill" style="background:#1d3a63">7</div><div><b>Tiled slope opposite the terrace · 7 modules</b><span>One row of 7 portrait modules, 15 cm above the eave</span></div></div>
-  <div class="tot"><b>17 modules</b> × 2278 × 1134 mm, for example 17 × 550–620 Wp ≈ 9.4–10.5 kWp.</div>
+  <h2>Solar layout · 16 modules</h2>
+  <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>Terrace · 6 modules</b><span>2 rows × 3 landscape, on a 10° frame facing north (low edge on the north side, 40 cm above the slab)</span></div></div>
+  <div class="opt"><div class="pill" style="background:#121417">4</div><div><b>Rear hip · 4 modules</b><span>2 × 2 landscape on the back slope (opposite the sit-out), centred on the hip</span></div></div>
+  <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>South slope (opposite the terrace) · 6 modules</b><span>One row of 6 portrait modules, lifted 0.75 m up the slope; a 500 mm walkway runs along the eave below them</span></div></div>
+  <div class="tot"><b>16 modules</b> (black) × 2278 × 1134 mm, for example 16 × 550–620 Wp ≈ 8.8–9.9 kWp.</div>
   <h2>Levels</h2>
   <p>Ground −0.45 · GF +0.00 · GF lintel +2.40 · FF +3.10 · FF lintel +5.50 · FF slab +6.20 · eaves +6.50 · tank slab +8.20 · tower slab +9.60</p>
   <div class="tot">Turn off <b>Roof</b> to see the first-floor rooms, then turn off <b>First floor</b> to see the ground floor.</div>
@@ -83,6 +83,8 @@
   <div><i style="background:#efe4c8"></i>Walls</div>
   <div><i style="background:#5d7486"></i>Windows (glazing)</div>
   <div><i style="background:#f7f5f0"></i>Slabs, sunshades, pergola</div>
+  <div><i style="background:#121417"></i>Solar modules (16)</div>
+  <div><i style="background:#b9bec4"></i>Walkway 500 mm</div>
   <div><i style="background:#dd8a3c"></i>Tiled roof</div>
   <div><i style="background:#9a958c"></i>Plinth (−0.45)</div>
 </div>
@@ -248,7 +250,7 @@ G.sol = { t: [], l: [] }; cur = G.sol;
   const ML = 227.8, MW = 113.4, MT = 3.5, OFF = 12, T10 = Math.tan(10 * D2R);
   const dirP = (u, v, h, du, dv, dh) => norm(sub(V3(u + du, v + dv, h + dh), V3(u, v, h)));
   const upN = (A, B) => { let n = norm(cross(A, B)); return n[1] < 0 ? mulS(n, -1) : n; };
-  const MC = hex("#1d3a63"), CL = [0.42, 0.55, 0.72], LEG = [0.45, 0.48, 0.52];
+  const MC = hex("#121417"), CL = [0.3, 0.32, 0.36], LEG = [0.45, 0.48, 0.52];
   function mod(O, U, V, Nn, wu, wv, leg) {
     const c = (a, b, n) => add(add(add(O, mulS(U, a * sc)), mulS(V, b * sc)), mulS(Nn, n * sc));
     hexa((a, b, d) => c(a ? wu : 0, b ? wv : 0, d ? MT : 0), MC);
@@ -273,10 +275,19 @@ G.sol = { t: [], l: [] }; cur = G.sol;
       mod(add(V3(u, v, h), mulS(Nn, OFF * sc)), U, V, Nn, ML, MW);
     }
   }
-  // 3) tiled slope opposite the terrace (eave u = RU1): 7 portrait in one row, 15 cm up from the eave
-  { const d = 15, u = RU1 - d, h = EAVE + d * T25, U = dirP(u, 0, h, 0, 1, 0), V = dirP(u, 0, h, -1, 0, T25), Nn = upN(U, V);
-    const v0 = 560 - (7 * MW + 6 * 2) / 2;
-    for (let i = 0; i < 7; i++) mod(add(V3(u, v0 + i * (MW + 2), h), mulS(Nn, OFF * sc)), U, V, Nn, MW, ML);
+  // 3) tiled slope opposite the terrace (eave u = RU1): 6 portrait in one row, lifted to leave a walkway along the eave
+  { const d = 68, u = RU1 - d, h = EAVE + d * T25, U = dirP(u, 0, h, 0, 1, 0), V = dirP(u, 0, h, -1, 0, T25), Nn = upN(U, V);
+    const v0 = 560 - (6 * MW + 5 * 2) / 2;
+    for (let i = 0; i < 6; i++) mod(add(V3(u, v0 + i * (MW + 2), h), mulS(Nn, OFF * sc)), U, V, Nn, MW, ML);
+    // walkway 500 mm along the slope, between the eave and the panel row (follows the tiles)
+    const wc = hex("#b9bec4"), st = 10, d0 = 12, d1 = 12 + 50 * Math.cos(25 * D2R), va = v0 - 50, vb = 560 + (560 - v0) + 50;
+    for (let dd = d0; dd < d1 - 0.01; dd += st) for (let v = va; v < vb - 0.01; v += st) {
+      const e = Math.min(dd + st, d1), f = Math.min(v + st, vb), hh = (q) => EAVE + q * T25 + 5;
+      const p1 = V3(RU1 - dd, v, hh(dd)), p2 = V3(RU1 - dd, f, hh(dd)), p3 = V3(RU1 - e, f, hh(e)), p4 = V3(RU1 - e, v, hh(e));
+      let n = norm(cross(sub(p2, p1), sub(p4, p1))); if (n[1] < 0) n = mulS(n, -1);
+      tri3(p1, p2, p3, wc, n); tri3(p1, p3, p4, wc, n);
+    }
+    const q = (dd, v) => V3(RU1 - dd, v, EAVE + dd * T25 + 5.5); line(q(d0, va), q(d0, vb)); line(q(d1, va), q(d1, vb)); line(q(d0, va), q(d1, va)); line(q(d0, vb), q(d1, vb));
   }
 }
 cur = G.base;
@@ -342,7 +353,8 @@ const LBL = [];
   lab("Flat terrace +6.20", V3(60, 1080, 640), "lv", "ext");
   lab("6 modules · terrace (10° tilt, facing north)", V3(245, 665, 720), "sol", "sol");
   lab("4 modules · rear hip", V3(870, 1090, 760), "sol", "sol");
-  lab("7 modules · south slope", V3(1180, 560, 760), "sol", "sol");
+  lab("6 modules · south slope", V3(1130, 560, 790), "sol", "sol");
+  lab("Walkway 500 mm", V3(1240, 560, 680), "lv", "sol");
   lab("Tower · slab +9.60", V3(490, 340, 1050), "lv", "ext");
   lab("Water tank · slab +8.20", V3(490, 200, 820), "lv", "ext");
   lab("Balcony 520 × 210 + pergola", V3(260, 60, 470), "lv", "ext");
