@@ -93,6 +93,7 @@
   <button data-v="front">Front</button>
   <button data-v="rear">Rear</button>
   <button data-v="top">Top</button>
+  <button data-v="walk">Walkway</button>
   <span class="sep"></span>
   <button id="bSol" class="on">Solar panels</button>
   <button id="bRoof" class="on">Roof</button>
@@ -282,14 +283,34 @@ G.sol = { t: [], l: [] }; cur = G.sol;
     const wc = hex("#f2c21b"), MSH = [0.62, 0.47, 0.04], st = 10, w0 = 12, w1 = 12 + 50 * Math.cos(25 * D2R), va = v0 - 50;
     const regs = [[RU1 - w1, RU1 - w0, va, RV1 - w0], [RU0 + w1, RU1 - w0, RV1 - w1, RV1 - w0]];
     const inW = (u, v) => regs.some(r => u >= r[0] - 0.01 && u <= r[1] + 0.01 && v >= r[2] - 0.01 && v <= r[3] + 0.01);
+    // 3D FRP grating: 38 mm deck on 10 cm steel supports above the tiles, raised side rims
+    const RIM = hex("#d9a812"), STL = hex("#8d949b"), TOPZ = 12, BOT = 8, RZ = 16;
+    const P = (u, v, z) => V3(u, v, roofH(u, v) + z);
+    const side = (a0, a1, cu, cvv) => {   // vertical face along a boundary edge, from deck bottom to rim top
+      const A = P(a0[0], a0[1], BOT), B = P(a1[0], a1[1], BOT), Cq = P(a1[0], a1[1], RZ), D = P(a0[0], a0[1], RZ);
+      quadOut(A, B, Cq, D, RIM, P(cu, cvv, BOT), false); line(D, Cq, MSH); line(A, B, MSH);
+      const di = sub(P(cu, cvv, RZ), D); const inr = mulS(norm([di[0], 0, di[2]]), 0.02);   // inner face of the rim
+      quadOut(add(A, inr), add(B, inr), add(Cq, inr), add(D, inr), RIM, add(P(a0[0], a0[1], RZ), mulS(inr, -5)), false);
+      const T = (p) => add(p, inr); quadOut(D, Cq, T(Cq), T(D), RIM, P(cu, cvv, 0), false);
+    };
     for (let uu = RU0; uu < RU1; uu += st) for (let v = va - 10; v < RV1; v += st) {
       const cu = uu + st / 2, cvv = v + st / 2; if (!inW(cu, cvv)) continue;
-      const hh = (p, q) => roofH(p, q) + 5;
-      const p1 = V3(uu, v, hh(uu, v)), p2 = V3(uu + st, v, hh(uu + st, v)), p3 = V3(uu + st, v + st, hh(uu + st, v + st)), p4 = V3(uu, v + st, hh(uu, v + st));
+      const p1 = P(uu, v, TOPZ), p2 = P(uu + st, v, TOPZ), p3 = P(uu + st, v + st, TOPZ), p4 = P(uu, v + st, TOPZ);
       let n = norm(cross(sub(p2, p1), sub(p4, p1))); if (n[1] < 0) n = mulS(n, -1);
       tri3(p1, p2, p3, wc, n); tri3(p1, p3, p4, wc, n);
+      const b1 = P(uu, v, BOT), b2 = P(uu + st, v, BOT), b3 = P(uu + st, v + st, BOT), b4 = P(uu, v + st, BOT);
+      const nb = mulS(n, -1); tri3(b1, b3, b2, RIM, nb); tri3(b1, b4, b3, RIM, nb);
       const lift = (p) => add(p, mulS(n, 0.006)); line(lift(p1), lift(p2), MSH); line(lift(p1), lift(p4), MSH);
-      if (!inW(cu + st, cvv)) line(lift(p2), lift(p3), MSH); if (!inW(cu, cvv + st)) line(lift(p4), lift(p3), MSH);
+      if (!inW(cu + st, cvv)) side([uu + st, v], [uu + st, v + st], cu, cvv);
+      if (!inW(cu - st, cvv)) side([uu, v], [uu, v + st], cu, cvv);
+      if (!inW(cu, cvv + st)) side([uu, v + st], [uu + st, v + st], cu, cvv);
+      if (!inW(cu, cvv - st)) side([uu, v], [uu + st, v], cu, cvv);
+      // steel support stools every ~60 cm along both edges
+      const edge = !inW(cu + st, cvv) || !inW(cu - st, cvv) || !inW(cu, cvv + st) || !inW(cu, cvv - st);
+      if (edge && (Math.abs(((cu + cvv) % 60 + 60) % 60 - 5) < 5)) {
+        const g0 = P(cu - 2, cvv - 2, 0), hS = roofH(cu, cvv);
+        box(cu - 2, cu + 2, cvv - 2, cvv + 2, hS - 2, hS + BOT, STL, false);
+      }
     }
   }
 }
@@ -319,6 +340,7 @@ const VIEWS = {
   front: { theta: 180, phi: 6, dist: 34, target: [0, 4.2, 0.3], ortho: false },
   rear: { theta: 35, phi: 28, dist: 32, target: [0, 3.6, 0], ortho: false },
   top: { theta: 180, phi: 89.9, dist: 22, target: [0.6, 0, 0.3], ortho: true },
+  walk: { theta: 38, phi: 26, dist: 9, target: [4.6, 6.9, 4.4], ortho: false },
 };
 function mul(a, b) { const r = new Array(16); for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) { let s = 0; for (let k = 0; k < 4; k++) s += a[k * 4 + j] * b[i * 4 + k]; r[i * 4 + j] = s; } return r; }
 function lookAt(e, t, u) { const f = norm(sub(t, e)), s = norm(cross(f, u)), uu = cross(s, f);
