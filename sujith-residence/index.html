@@ -69,14 +69,14 @@
   <div class="opt"><div class="pill" style="background:#8f8a80">▤</div><div><b>Flat terrace +6.20</b><span>Left wing, 4.75 × 9.70 m slab, open edge (no parapet, as in the photo); balcony 5.20 × 2.10 m with pergola below it</span></div></div>
   <div class="opt"><div class="pill" style="background:#3a3f45">▲</div><div><b>Water tank and tower</b><span>Tank 2.00 × 1.95 m, slab +8.20; tower 1.50 × 1.50 m, slab +9.60, small tiled roof</span></div></div>
   <h2>Solar layout · 15 modules</h2>
-  <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>Terrace · 6 modules</b><span>2 rows × 3 portrait (vertical) modules on a low 10° frame facing south: low edge 15 cm above the slab, high edge ≈ 55 cm</span></div></div>
+  <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>Terrace · 6 modules</b><span>As per site sketch: 2 rows × 3 portrait at the east end, running the full depth of the terrace from the north edge to the south edge; facing south at 10°, north edge 1.40 m above the slab (south edge ≈ 0.57 m), on an elevated GI structure</span></div></div>
   <div class="opt"><div class="pill" style="background:#121417">3</div><div><b>Rear hip · 3 modules</b><span>One row of 3 portrait (vertical) modules, lifted 0.7 m up the back slope above the walkway, centred on the hip</span></div></div>
   <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>South slope (opposite the terrace) · 6 modules</b><span>One row of 6 portrait modules, lifted 0.75 m up the slope; a 500 mm yellow FRP mesh walkway runs along the eave below them, turns the corner and continues along the full rear eave below the rear-hip panels</span></div></div>
-  <div class="tot"><b>15 modules</b> (black) × 2278 × 1134 mm, for example 15 × 550–620 Wp ≈ 8.3–9.3 kWp.</div>
+  <div class="tot"><b>15 × Premier 620 Wp black</b> (2382 × 1134 mm) = <b>9.30 kWp</b></div>
   <h2>Levels</h2>
   <p>Ground −0.45 · GF +0.00 · GF lintel +2.40 · FF +3.10 · FF lintel +5.50 · FF slab +6.20 · eaves +6.50 · tank slab +8.20 · tower slab +9.60</p>
   <div class="tot">Turn off <b>Roof</b> to see the first-floor rooms, then turn off <b>First floor</b> to see the ground floor.</div>
-  <div class="warn"><b>Check:</b> the rear slope is a triangle; lifted above the walkway, the top corners of the 3-module row cross the hip lines by about 0.35 m (2 modules would fit fully). <b>Approximate:</b> slab thickness (15 cm), the staircase layout (only riser 18.2 and tread 28 are given), the tower's pyramid roof and its vents (based on the photo).<br><b>Orientation:</b> the compass on this drawing puts the front (porch side) facing west. The earlier Villa No 14 solar sheet suggested a different direction, so please confirm on site.</div>
+  <div class="warn"><b>Check:</b> the rear slope is a triangle; lifted above the walkway, the top corners of the 3-module row cross the hip lines by about 0.45 m (2 modules would fit fully). <b>Approximate:</b> slab thickness (15 cm), the staircase layout (only riser 18.2 and tread 28 are given), the tower's pyramid roof and its vents (based on the photo).<br><b>Orientation:</b> the compass on this drawing puts the front (porch side) facing west. The earlier Villa No 14 solar sheet suggested a different direction, so please confirm on site.</div>
   </div>
 </div>
 <div id="legend" class="card">
@@ -248,7 +248,7 @@ cur = G.base;
 // ---- solar modules (2278 × 1134 mm, as on the Dehlsen sheet)
 G.sol = { t: [], l: [] }; cur = G.sol;
 {
-  const ML = 227.8, MW = 113.4, MT = 3.5, OFF = 12, T10 = Math.tan(10 * D2R);
+  const ML = 238.2, MW = 113.4, MT = 3.5, OFF = 12, T10 = Math.tan(10 * D2R);
   const dirP = (u, v, h, du, dv, dh) => norm(sub(V3(u + du, v + dv, h + dh), V3(u, v, h)));
   const upN = (A, B) => { let n = norm(cross(A, B)); return n[1] < 0 ? mulS(n, -1) : n; };
   const MC = hex("#121417"), CL = [0.3, 0.32, 0.36], LEG = [0.45, 0.48, 0.52];
@@ -261,17 +261,26 @@ G.sol = { t: [], l: [] }; cur = G.sol;
     for (let j = 1; j < nv; j++) line(c(2, wv * j / nv, top), c(wu - 2, wv * j / nv, top), CL);
     if (!leg) [[0, 0], [wu, 0], [0, wv], [wu, wv]].forEach(([a, b]) => line(c(a, b, 0), c(a, b, -OFF), LEG));
   }
-  // 1) terrace: 2 rows × 3 portrait, on a low 10° frame facing south (+u), low edge 40 cm above the slab
-  { const U = dirP(0, 0, 0, 0, 1, 0), V = dirP(0, 0, 0, -1, 0, T10), Nn = upN(U, V), hl = TOP + 15;
-    const v0 = 560, dU = ML * Math.cos(10 * D2R), hh = hl + ML * Math.sin(10 * D2R), SC = hex("#9aa3ab");
-    for (const ul of [455, 215]) { const uh = ul - dU;
-      for (let k = 0; k < 3; k++) {
-        const v = v0 + k * (MW + 2);
-        mod(V3(ul, v, hl), U, V, Nn, MW, ML, true);
-        for (const vv of [v + 15, v + MW - 15]) { box(ul - 4, ul, vv - 2, vv + 2, TOP, hl, SC, false); box(uh, uh + 4, vv - 2, vv + 2, TOP, hh, SC, false); box(uh, ul, vv - 2, vv + 2, TOP, TOP + 4, SC, false); }
-      }
+  // 1) terrace, low edge 40 cm above the slab
+  // per site sketch: 2 rows × 3 portrait, full terrace depth (north end to south end) at the east end, north edge +1.40 m above the slab
+  { const U = dirP(0, 0, 0, 0, 1, 0), V = dirP(0, 0, 0, -1, 0, T10), Nn = upN(U, V), c10 = Math.cos(10 * D2R), s10 = Math.sin(10 * D2R);
+    const L = 2 * ML + 2, hN = TOP + 140, hS = hN - L * s10, uS = -8 + L * c10, w = 3 * MW + 2 * 2, v0 = 1146 - w;
+    const PL = (u) => hS + (uS - u) * T10;          // underside plane height at plan position u
+    for (let r = 0; r < 2; r++) for (let k = 0; k < 3; k++) {
+      const d = r * (ML + 2), u = uS - d * c10, h = hS + d * s10;
+      mod(V3(u, v0 + k * (MW + 2), h), U, V, Nn, MW, ML, true);
     }
+    // elevated GI structure: 4 post lines × 3 posts, rafters along the slope, purlins under each row
+    const STL = hex("#9aa3ab"), RF = 8;
+    const posts = [v0 + 3, v0 + MW + 1, v0 + 2 * MW + 3, v0 + w - 3];
+    for (const pv of posts) {
+      for (const pu of [uS - 6, (uS - 8) / 2 + 4, -2]) box(pu - 3, pu + 3, pv - 3, pv + 3, TOP, PL(pu) - RF, STL);
+      hexa((a, b, c) => { const u = a ? -8 : uS, hh = PL(u) - (b ? 0 : RF); return V3(u, pv + (c ? 3 : -3), hh); }, STL);     // rafter
+    }
+    for (const fu of [uS - 30, uS - ML * c10 + 30, uS - ML * c10 - 30, 22]) hexa((a, b, c) => V3(fu + (c ? 3 : -3), a ? v0 + w : v0, PL(fu) - (b ? RF : RF + 6)), STL);   // purlins
+    for (const pv of [posts[0], posts[3]]) line(V3(uS - 6, pv, TOP), V3(-2, pv, PL(-2) - RF), [0.5, 0.53, 0.57]);   // bracing
   }
+
 
 
   // 2) rear hip (eave v = RV1): 3 portrait in one row, lifted above the rear walkway, centred on the hip
@@ -380,7 +389,7 @@ const LBL = [];
 { const lab = (t, p, c, g) => LBL.push({ t, p, c, g });
   lab("Hipped truss roof · 25° · ridge ≈ +8.39", V3(870, 560, 850), "lv", "ext");
   lab("Flat terrace +6.20", V3(60, 1080, 640), "lv", "ext");
-  lab("6 modules · terrace (2 rows, 10° facing south)", V3(230, 730, 700), "sol", "sol");
+  lab("6 modules · terrace (north edge +1.40 m)", V3(230, 975, 790), "sol", "sol");
   lab("3 modules · rear hip", V3(870, 1040, 790), "sol", "sol");
   lab("Walkway · yellow FRP mesh", V3(870, 1160, 680), "lv", "sol");
   lab("6 modules · south slope", V3(1130, 560, 790), "sol", "sol");
