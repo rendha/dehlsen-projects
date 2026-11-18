@@ -68,22 +68,22 @@
   <div class="opt"><div class="pill" style="background:#dd8a3c">⌂</div><div><b>Hipped truss roof · 25°</b><span>8.10 × 12.70 m to the eaves, eaves +6.50, ridge ≈ +8.39</span></div></div>
   <div class="opt"><div class="pill" style="background:#8f8a80">▤</div><div><b>Flat terrace +6.20</b><span>Left wing, 4.75 × 9.70 m slab, open edge (no parapet, as in the photo); balcony 5.20 × 2.10 m with pergola below it</span></div></div>
   <div class="opt"><div class="pill" style="background:#3a3f45">▲</div><div><b>Water tank and tower</b><span>Tank 2.00 × 1.95 m, slab +8.20; tower 1.50 × 1.50 m, slab +9.60, small tiled roof</span></div></div>
-  <h2>Solar layout · 16 modules</h2>
+  <h2>Solar layout · 15 modules</h2>
   <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>Terrace · 6 modules</b><span>2 rows × 3 landscape, on a 10° frame facing north (low edge on the north side, 40 cm above the slab)</span></div></div>
-  <div class="opt"><div class="pill" style="background:#121417">4</div><div><b>Rear hip · 4 modules</b><span>One row of 4 portrait (vertical) modules on the back slope, centred on the hip</span></div></div>
-  <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>South slope (opposite the terrace) · 6 modules</b><span>One row of 6 portrait modules, lifted 0.75 m up the slope; a 500 mm walkway runs along the eave below them, turns the corner and continues along the rear eave to the rear-hip panels</span></div></div>
-  <div class="tot"><b>16 modules</b> (black) × 2278 × 1134 mm, for example 16 × 550–620 Wp ≈ 8.8–9.9 kWp.</div>
+  <div class="opt"><div class="pill" style="background:#121417">3</div><div><b>Rear hip · 3 modules</b><span>One row of 3 portrait (vertical) modules, lifted 0.7 m up the back slope above the walkway, centred on the hip</span></div></div>
+  <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>South slope (opposite the terrace) · 6 modules</b><span>One row of 6 portrait modules, lifted 0.75 m up the slope; a 500 mm walkway runs along the eave below them, turns the corner and continues along the full rear eave below the rear-hip panels</span></div></div>
+  <div class="tot"><b>15 modules</b> (black) × 2278 × 1134 mm, for example 15 × 550–620 Wp ≈ 8.3–9.3 kWp.</div>
   <h2>Levels</h2>
   <p>Ground −0.45 · GF +0.00 · GF lintel +2.40 · FF +3.10 · FF lintel +5.50 · FF slab +6.20 · eaves +6.50 · tank slab +8.20 · tower slab +9.60</p>
   <div class="tot">Turn off <b>Roof</b> to see the first-floor rooms, then turn off <b>First floor</b> to see the ground floor.</div>
-  <div class="warn"><b>Check:</b> the rear slope is a triangle, so the top corners of the 4-module row cross the hip lines by about 0.35 m (3 vertical modules would fit fully). <b>Approximate:</b> slab thickness (15 cm), the staircase layout (only riser 18.2 and tread 28 are given), the tower's pyramid roof and its vents (based on the photo).<br><b>Orientation:</b> the compass on this drawing puts the front (porch side) facing west. The earlier Villa No 14 solar sheet suggested a different direction, so please confirm on site.</div>
+  <div class="warn"><b>Check:</b> the rear slope is a triangle; lifted above the walkway, the top corners of the 3-module row cross the hip lines by about 0.35 m (2 modules would fit fully). <b>Approximate:</b> slab thickness (15 cm), the staircase layout (only riser 18.2 and tread 28 are given), the tower's pyramid roof and its vents (based on the photo).<br><b>Orientation:</b> the compass on this drawing puts the front (porch side) facing west. The earlier Villa No 14 solar sheet suggested a different direction, so please confirm on site.</div>
   </div>
 </div>
 <div id="legend" class="card">
   <div><i style="background:#efe4c8"></i>Walls</div>
   <div><i style="background:#5d7486"></i>Windows (glazing)</div>
   <div><i style="background:#f7f5f0"></i>Slabs, sunshades, pergola</div>
-  <div><i style="background:#121417"></i>Solar modules (16)</div>
+  <div><i style="background:#121417"></i>Solar modules (15)</div>
   <div><i style="background:#b9bec4"></i>Walkway 500 mm</div>
   <div><i style="background:#dd8a3c"></i>Tiled roof</div>
   <div><i style="background:#9a958c"></i>Plinth (−0.45)</div>
@@ -269,10 +269,10 @@ G.sol = { t: [], l: [] }; cur = G.sol;
       for (const vv of [v + 20, v + ML - 20]) { box(ul, ul + 4, vv - 2, vv + 2, TOP, hl, hex("#9aa3ab"), false); box(uh - 4, uh, vv - 2, vv + 2, TOP, hh, hex("#9aa3ab"), false); }
     }
   }
-  // 2) rear hip (eave v = RV1): 4 portrait in one row, centred on the hip
+  // 2) rear hip (eave v = RV1): 3 portrait in one row, lifted above the rear walkway, centred on the hip
   { const U = dirP(0, RV1, EAVE, 1, 0, 0), V = dirP(0, RV1, EAVE, 0, -1, T25), Nn = upN(U, V);
-    { const d = 5, w = 4 * MW + 3 * 2, v = RV1 - d, h = EAVE + d * T25;
-      for (let k = 0; k < 4; k++) mod(add(V3(RUC - w / 2 + k * (MW + 2), v, h), mulS(Nn, OFF * sc)), U, V, Nn, MW, ML); }
+    { const d = 62, w = 3 * MW + 2 * 2, v = RV1 - d, h = EAVE + d * T25;
+      for (let k = 0; k < 3; k++) mod(add(V3(RUC - w / 2 + k * (MW + 2), v, h), mulS(Nn, OFF * sc)), U, V, Nn, MW, ML); }
   }
   // 3) tiled slope opposite the terrace (eave u = RU1): 6 portrait in one row, lifted to leave a walkway along the eave
   { const d = 68, u = RU1 - d, h = EAVE + d * T25, U = dirP(u, 0, h, 0, 1, 0), V = dirP(u, 0, h, -1, 0, T25), Nn = upN(U, V);
@@ -280,9 +280,9 @@ G.sol = { t: [], l: [] }; cur = G.sol;
     for (let i = 0; i < 6; i++) mod(add(V3(u, v0 + i * (MW + 2), h), mulS(Nn, OFF * sc)), U, V, Nn, MW, ML);
     // walkway 500 mm: along the south eave below the row, round the hip corner and along the rear eave to the rear-hip panels
     const wc = hex("#b9bec4"), st = 10, w0 = 12, w1 = 12 + 50 * Math.cos(25 * D2R), va = v0 - 50;
-    const regs = [[RU1 - w1, RU1 - w0, va, RV1 - w0], [RUC + (4 * MW + 6) / 2 + 2, RU1 - w0, RV1 - w1, RV1 - w0]];
+    const regs = [[RU1 - w1, RU1 - w0, va, RV1 - w0], [RU0 + w1, RU1 - w0, RV1 - w1, RV1 - w0]];
     const inW = (u, v) => regs.some(r => u >= r[0] - 0.01 && u <= r[1] + 0.01 && v >= r[2] - 0.01 && v <= r[3] + 0.01);
-    for (let uu = RU1 - 120; uu < RU1; uu += st) for (let v = va - 10; v < RV1; v += st) {
+    for (let uu = RU0; uu < RU1; uu += st) for (let v = va - 10; v < RV1; v += st) {
       const cu = uu + st / 2, cvv = v + st / 2; if (!inW(cu, cvv)) continue;
       const hh = (p, q) => roofH(p, q) + 5;
       const p1 = V3(uu, v, hh(uu, v)), p2 = V3(uu + st, v, hh(uu + st, v)), p3 = V3(uu + st, v + st, hh(uu + st, v + st)), p4 = V3(uu, v + st, hh(uu, v + st));
@@ -353,7 +353,8 @@ const LBL = [];
   lab("Hipped truss roof · 25° · ridge ≈ +8.39", V3(870, 560, 850), "lv", "ext");
   lab("Flat terrace +6.20", V3(60, 1080, 640), "lv", "ext");
   lab("6 modules · terrace (10° tilt, facing north)", V3(245, 665, 720), "sol", "sol");
-  lab("4 modules · rear hip", V3(870, 1090, 760), "sol", "sol");
+  lab("3 modules · rear hip", V3(870, 1040, 790), "sol", "sol");
+  lab("Walkway 500 mm", V3(870, 1160, 680), "lv", "sol");
   lab("6 modules · south slope", V3(1130, 560, 790), "sol", "sol");
   lab("Walkway 500 mm", V3(1240, 560, 680), "lv", "sol");
   lab("Tower · slab +9.60", V3(490, 340, 1050), "lv", "ext");
