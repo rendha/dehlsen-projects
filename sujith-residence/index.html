@@ -69,7 +69,7 @@
   <div class="opt"><div class="pill" style="background:#8f8a80">▤</div><div><b>Flat terrace +6.20</b><span>Left wing, 4.75 × 9.70 m slab, open edge (no parapet, as in the photo); balcony 5.20 × 2.10 m with pergola below it</span></div></div>
   <div class="opt"><div class="pill" style="background:#3a3f45">▲</div><div><b>Water tank and tower</b><span>Tank 2.00 × 1.95 m, slab +8.20; tower 1.50 × 1.50 m, slab +9.60, small tiled roof</span></div></div>
   <h2>Solar layout · 15 modules</h2>
-  <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>Terrace · 6 modules</b><span>2 rows × 3 landscape, on a 10° frame facing north (low edge on the north side, 40 cm above the slab)</span></div></div>
+  <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>Terrace · 6 modules</b><span>One row of 6 portrait (vertical) modules on a 10° frame facing south, low edge 40 cm above the slab</span></div></div>
   <div class="opt"><div class="pill" style="background:#121417">3</div><div><b>Rear hip · 3 modules</b><span>One row of 3 portrait (vertical) modules, lifted 0.7 m up the back slope above the walkway, centred on the hip</span></div></div>
   <div class="opt"><div class="pill" style="background:#121417">6</div><div><b>South slope (opposite the terrace) · 6 modules</b><span>One row of 6 portrait modules, lifted 0.75 m up the slope; a 500 mm yellow FRP mesh walkway runs along the eave below them, turns the corner and continues along the full rear eave below the rear-hip panels</span></div></div>
   <div class="tot"><b>15 modules</b> (black) × 2278 × 1134 mm, for example 15 × 550–620 Wp ≈ 8.3–9.3 kWp.</div>
@@ -261,15 +261,17 @@ G.sol = { t: [], l: [] }; cur = G.sol;
     for (let j = 1; j < nv; j++) line(c(2, wv * j / nv, top), c(wu - 2, wv * j / nv, top), CL);
     if (!leg) [[0, 0], [wu, 0], [0, wv], [wu, wv]].forEach(([a, b]) => line(c(a, b, 0), c(a, b, -OFF), LEG));
   }
-  // 1) terrace: 2 rows × 3 landscape, on a 10° frame facing north (−u), low edge 40 cm above the slab
-  { const U = dirP(0, 0, 0, 0, 1, 0), V = dirP(0, 0, 0, 1, 0, T10), Nn = upN(U, V), hl = TOP + 40, v0 = 321;
-    for (const ul of [38.3, 228.3]) for (let k = 0; k < 3; k++) {
-      const v = v0 + k * (ML + 2), O = V3(ul, v, hl);
-      mod(O, U, V, Nn, ML, MW, true);
-      const uh = ul + MW * Math.cos(10 * D2R), hh = hl + MW * Math.sin(10 * D2R);
-      for (const vv of [v + 20, v + ML - 20]) { box(ul, ul + 4, vv - 2, vv + 2, TOP, hl, hex("#9aa3ab"), false); box(uh - 4, uh, vv - 2, vv + 2, TOP, hh, hex("#9aa3ab"), false); }
+  // 1) terrace: one row of 6 portrait, on a 10° frame facing south (+u), low edge 40 cm above the slab
+  { const U = dirP(0, 0, 0, 0, 1, 0), V = dirP(0, 0, 0, -1, 0, T10), Nn = upN(U, V), hl = TOP + 40, ul = 340;
+    const v0 = 665 - (6 * MW + 5 * 2) / 2, uh = ul - ML * Math.cos(10 * D2R), hh = hl + ML * Math.sin(10 * D2R);
+    for (let k = 0; k < 6; k++) {
+      const v = v0 + k * (MW + 2);
+      mod(V3(ul, v, hl), U, V, Nn, MW, ML, true);
+      for (const vv of [v + 15, v + MW - 15]) { box(ul - 4, ul, vv - 2, vv + 2, TOP, hl, hex("#9aa3ab"), false); box(uh, uh + 4, vv - 2, vv + 2, TOP, hh, hex("#9aa3ab"), false);
+        box(uh, ul, vv - 2, vv + 2, TOP, TOP + 4, hex("#9aa3ab"), false); }
     }
   }
+
   // 2) rear hip (eave v = RV1): 3 portrait in one row, lifted above the rear walkway, centred on the hip
   { const U = dirP(0, RV1, EAVE, 1, 0, 0), V = dirP(0, RV1, EAVE, 0, -1, T25), Nn = upN(U, V);
     { const d = 62, w = 3 * MW + 2 * 2, v = RV1 - d, h = EAVE + d * T25;
@@ -376,7 +378,7 @@ const LBL = [];
 { const lab = (t, p, c, g) => LBL.push({ t, p, c, g });
   lab("Hipped truss roof · 25° · ridge ≈ +8.39", V3(870, 560, 850), "lv", "ext");
   lab("Flat terrace +6.20", V3(60, 1080, 640), "lv", "ext");
-  lab("6 modules · terrace (10° tilt, facing north)", V3(245, 665, 720), "sol", "sol");
+  lab("6 modules · terrace (vertical, 10° tilt facing south)", V3(245, 665, 720), "sol", "sol");
   lab("3 modules · rear hip", V3(870, 1040, 790), "sol", "sol");
   lab("Walkway · yellow FRP mesh", V3(870, 1160, 680), "lv", "sol");
   lab("6 modules · south slope", V3(1130, 560, 790), "sol", "sol");
